@@ -2,6 +2,8 @@
 
 public class Tool
 {
+    private static Vector3 CameraStartAngles = new Vector3(35.25f, 45, 0);
+
     public static GameObject CreateCube()
     {
         GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -32,6 +34,7 @@ public class Tool
     public static void ResetCameraPos(Transform tsf, eDirection e)
     {
         Camera.main.transform.position = GetCameraPoint(tsf, e);
+        Camera.main.transform.eulerAngles = CameraStartAngles;
     }
 
     public static void TurnLeft(eDirection e)
@@ -44,6 +47,11 @@ public class Tool
     {
         Vector3 point = GetCenterPoint(e);
         Camera.main.transform.RotateAround(point, Vector3.up, 90);
+    }
+
+    public static void RotateScene(Vector3 point, eDirection e, float angle)
+    {
+        Camera.main.transform.RotateAround(point, Vector3.up, angle);
     }
 
     private static Vector3 GetCameraPoint(Transform tsf, eDirection e)
@@ -59,12 +67,12 @@ public class Tool
         return Vector3.zero;
 
     }
-    private static Vector3 GetCenterPoint(eDirection e)
+    public static Vector3 GetCenterPoint(eDirection e)
     {
         float distance = 5f;
         switch (e)
         {
-            case eDirection.forward:return Camera.main.transform.position + new Vector3(distance, -distance, distance);
+            case eDirection.forward: return Camera.main.transform.position + new Vector3(distance, -distance, distance);
             case eDirection.left: return Camera.main.transform.position + new Vector3(-distance, -distance, distance);
             case eDirection.back: return Camera.main.transform.position + new Vector3(-distance, -distance, -distance);
             case eDirection.right: return Camera.main.transform.position + new Vector3(distance, -distance, -distance);

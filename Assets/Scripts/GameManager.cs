@@ -2,7 +2,7 @@
 
 public enum eDirection
 {
-    forward,
+    forward = 0,
     left,
     back,
     right,
@@ -20,6 +20,7 @@ public class GameManager
         }
     }
 
+    private Vector3 point;//相机旋转围绕的点
     private Material redMaterial;//红色材质
     private Material norMaterial;//普通材质
     public eDirection CameraDirection = eDirection.forward;//相机方向
@@ -123,5 +124,26 @@ public class GameManager
     {
         MeshRenderer meshRenderer = go.GetComponent<MeshRenderer>();
         meshRenderer.material = isRed ? redMaterial : norMaterial;
+    }
+
+    public void OnDragSceneStart()
+    {
+        point = Tool.GetCenterPoint(CameraDirection);
+    }
+
+    public void OnDragScene(float angle)
+    {
+        Tool.RotateScene(point, CameraDirection, angle);
+    }
+
+    public void OnDragSceneEnd(float angle)
+    {
+        float left = angle % 90;
+        float offsetAngle = left > 45 ? 90 - left : -left;
+        Tool.RotateScene(point, CameraDirection, offsetAngle);
+        int count = (int)angle / 90;
+        if (left > 45) count++;
+        //TODO
+        //CameraDirection += count % 4;
     }
 }

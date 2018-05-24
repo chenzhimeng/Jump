@@ -39,6 +39,9 @@ public class EventManager
 public enum EventId
 {
     OnClickObject,
+    OnDragSceneStart,
+    OnDragScene,
+    OnDragSceneEnd,
     OnPointChanged,
     OnPositionChanged,
 }
